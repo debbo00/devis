@@ -240,10 +240,13 @@
                 /mi chiamo\s+([a-zA-Z]+)/i,
                 /sono\s+([a-zA-Z]+)/i,
                 /mi\s+(\w+)/i,
+                /re\b/i,
             ];
             for (const pattern of patterns) {
                 const match = message.match(pattern);
-                if (match) return match[1];
+                if (match) {
+                    return match[1] || "RE";
+                }
             }
             return null;
         }
