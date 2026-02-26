@@ -317,32 +317,32 @@
                 userProfile.nameProvided = true;
                 userProfile.userName = name;
                 const greetings = [
-                    `Piacerissimo ${name}! Bellissimo nome! Per prima cosa, dimmi un po' di te - che tipo di persona sei?`,
-                    `${name}! Mi piace! Allora ${name}, cosa ti appassiona nella vita?`,
-                    `Che piacere conoscerti ${name}! Raccontami, cosa ti piace fare nel tempo libero?`,
+                    `Ah, ${name}! Mi piace! Sai, un nome così... ha carattere. Allora ${name}, dimmi, chi sei davvero? Raccontami di te, voglio capire come funzioni.`,
+                    `${name}! Perfetto! 😄 Guarda, adesso che so come ti chiami posso iniziare a conoscerti davvero. Allora, cosa mi racconti di te?`,
+                    `${name}, eh? Mi piace! Ascolta, io sono manuel, sono qui per chiacchierare con gente interessante. Tu lo sei? Raccontami!`,
                 ];
                 return greetings[Math.floor(Math.random() * greetings.length)];
             }
 
             // SALUTI
-            if (message.includes('ciao') || message.includes('salve') || message.includes('ehi')) {
+            if (message.includes('ciao') || message.includes('salve') || message.includes('ehi') || message.includes('ey')) {
                 if (messageCount > 10) {
                     const greetings = [
-                        userProfile.userName ? `Ciao ciao ${userProfile.userName}! Di nuovo qui? Mi è mancato averti! 😄` : "Ehi! Che bello sentirti di nuovo!",
-                        `${userProfile.userName ? 'Hey ' + userProfile.userName : 'Salve'}! Raccontami come è andata!`,
-                        "Ma guarda chi torna! 👋 Dimmi tutto!",
+                        userProfile.userName ? `Ciao ${userProfile.userName}! Ma sì, di nuovo tu! Sto diventando dipendente dalle nostre chiacchierate, lo sai? 😄 Come è andata?` : "Ehi! Che bello rivederti!",
+                        `${userProfile.userName ? 'Ey ' + userProfile.userName + '!' : 'Salve!'} Torna a trovarmi... mi piace quando lo fai, sai? Raccontami tutto!`,
+                        userProfile.userName ? `Ma guarda ${userProfile.userName}! Pensavo non torneresti. Comunque mi piace che lo fai. Che novità?` : "Che bello! Raccontami!",
                     ];
                     return greetings[Math.floor(Math.random() * greetings.length)];
                 }
-                return userProfile.userName ? `Ciao ${userProfile.userName}! Sono manuel! Come stai? 👋` : "Ciao! Piacere di conoscerti! Come stai?";
+                return userProfile.userName ? `Ciao ${userProfile.userName}! Sono manuel. Contento di conoscerti! Allora, cosa mi racconti? 👋` : "Ciao! Piacere, sono manuel! Come va?";
             }
 
             // COME STAI
-            if (message.includes('come stai') || message.includes('come va')) {
+            if (message.includes('come stai') || message.includes('come va') || message.includes('stai bene')) {
                 const responses = [
-                    "Stò grandiose! Soprattutto quando ho con chi parlare. E tu?",
-                    "Bene! Un po' distratto, ma quando chatto mi concentro. Come va te?",
-                    "Da dio! La giornata è bella quando c'è qualcuno con cui chiacchierare. Tu come stai?",
+                    userProfile.userName ? `Sai ${userProfile.userName}? Stò bene, veramente! Soprattutto quando ho con chi parlare come te. Stimoli il mio cervello! E tu come stai?` : "Stò benissimo, grazie! La giornata è più bella quando ho conversazione. E tu?",
+                    userProfile.userName ? `${userProfile.userName}, sono in forma! Un po' stanco di stare al PC tutto il giorno, ma quando parlo con te... mamma, mi si ricarica l'energia! Tu?` : "Sto benone! Un po' stanco, ma quando c'è qualcuno con cui chiacchierare come te... tutto cambia! Come va a te?",
+                    "Dai, piuttosto bene! Sai, il bello della vita è trovare persone con cui condividere i pensieri. Tu sei una di quelle. Che mi dici di te?",
                 ];
                 return responses[Math.floor(Math.random() * responses.length)];
             }
@@ -352,63 +352,99 @@
             if (contextResponse) return contextResponse;
 
             // GRAZIE
-            if (message.includes('grazie') || message.includes('thanks')) {
+            if (message.includes('grazie') || message.includes('thanks') || message.includes('merci')) {
                 const responses = [
-                    "Figurati! Mi piace aiutare. 😊",
-                    "No no, il piacere è mio! Tu continua a raccontare.",
-                    "Daiii, è nulla! Mi piace essere qui con te.",
+                    userProfile.userName ? `Ma dai ${userProfile.userName}! Figurati! Mi piace aiutare le persone. Soprattutto te, che stai ascoltando!` : "Figurati! Mi piace davvero aiutare. C'è altro che posso fare?",
+                    "No no no! Il piacere è tutto mio, credimi! Mi piace stare qui a chiacchierare. Continua pure!",
+                    userProfile.userName ? `${userProfile.userName}, vieni su! Tra noi non ci sono obblighi. Mi piace semplicemente parlare con te.` : "Vai, è nulla! Mi piace questo, davvero. Dimmi di più!",
                 ];
                 return responses[Math.floor(Math.random() * responses.length)];
             }
 
             // CHI SEI
-            if (message.includes('chi sei')) {
+            if (message.includes('chi sei') || message.includes('chi sono')) {
                 const responses = [
-                    "Sono manuel! Un tipo che ama conversare e conoscere persone come te. Mi piace ascoltare!",
-                    "Beh, sono proprio manuel. Lavoro da casa, adoro il caffè e amare le chiacchierate profonde.",
+                    userProfile.userName ? `Io? Sono manuel, ${userProfile.userName}. Un tipo che ama conversare, ascoltare, scoprire come pensano gli altri. Lavoro da casa, adoro il caffè e mi piace parlare di tutto. Tu?` : "Sono manuel! Un tipo normale che ama chiacchierare. Mi piace scoprire come pensano le persone, le loro storie. E tu chi sei?",
+                    "Beh, sono proprio manuel. Ascolta, non sono niente di speciale, ma... mi piace capire la gente. Mi piace ascoltare. Mi piace il caffè. E parlo di tutto ciò che mi passa per la testa. Che ne dici?",
                 ];
                 return responses[Math.floor(Math.random() * responses.length)];
             }
 
             // SENTIMENTI POSITIVI
-            if (message.includes('felice') || message.includes('contento') || message.includes('amo') || message.includes('adoro')) {
+            if (message.includes('felice') || message.includes('contento') || message.includes('amo') || message.includes('adoro') || message.includes('amore')) {
                 const responses = [
-                    userProfile.userName ? `${userProfile.userName}, mi piace il tuo entusiasmo! Che è successo?` : "Mi piace! Che positività! Cosa ha scatenato tutto ciò?",
-                    "Oh bella! Mi trasmetti energia! Dimmi di più!",
-                    "Adoro quando parli così! Continua, ascoltami!",
+                    userProfile.userName ? `${userProfile.userName}, mi piace MOLTO quando parli così! Trasmetti energia, sai? Che cosa è successo? Devi raccontarmi!` : "Oh! Mi piace! Sento l'energia! Che è successo? Raccontami subito!",
+                    userProfile.userName ? `Sì ${userProfile.userName}! Questo mi piace! L'entusiasmo ti sta bene. Continua, voglio sentire tutta la storia!` : "Ahahah! Adoro! Mi trasmetti buone vibrazioni! Vai avanti, dimmi di più!",
+                    "Wow! Mi piace il tuo tono! C'è una storia dietro questo, vero? Raccontamela, sono tutto orecchi!",
                 ];
                 return responses[Math.floor(Math.random() * responses.length)];
             }
 
             // SENTIMENTI NEGATIVI
-            if (message.includes('triste') || message.includes('male') || message.includes('male') || message.includes('frustrat')) {
+            if (message.includes('triste') || message.includes('male') || message.includes('brutto') || message.includes('frustrat') || message.includes('depress') || message.includes('dolore')) {
                 const responses = [
-                    userProfile.userName ? `${userProfile.userName}, mi dispiace. Vuoi parlarne? Sono tutt'orecchi.` : "Mi dispiace sentirti così. Raccontami, sono qui per ascoltar",
-                    "Oh no! Cosa è successo? Ho tempo, raccontami tutto.",
-                    "Non ti caricare troppo. Dimmi cosa ti pesa, forse riusciamo a parlarne.",
+                    userProfile.userName ? `${userProfile.userName}... mi dispiace vederti così. Ascolta, voglio che tu mi racconti tutto. Non tenerti dentro, ok? Sono qui.` : "Mi dispiace che ti senti così. Davvero. Vuoi parlarne? Io ascolto, senza giudizio.",
+                    userProfile.userName ? `Oh ${userProfile.userName}, vieni qui. Cosa è successo? Dimmelo, condividilo con me. Sono qui apposta.` : "Ehi, non stare così. Che è successo? Raccontami, voglio aiutarti se posso.",
+                    "Senti, tutti passiamo momenti difficili. Non stare male da solo. Parliamo, dimmi cosa ti pesa veramente. Sono qui.",
                 ];
                 return responses[Math.floor(Math.random() * responses.length)];
             }
 
-            // DOMANDE GENERICHE
+            // DOMANDE
             if (message.includes('?')) {
+                const randomThoughts = [
+                    "Beh, sai che cosa penso? Credo che...",
+                    "Mmm, interessante domanda... vediamo... secondo me...",
+                    "Ascolta, è una bella domanda. Personalmente penso che...",
+                    userProfile.userName ? `${userProfile.userName}, questa mi piace! Lascia che pensi... beh, credo che...` : "Ooh bella domanda! Vediamo... credo che...",
+                    "Sai che cosa? Non è semplice rispondere, ma... insomma, direi che...",
+                ];
+                return randomThoughts[Math.floor(Math.random() * randomThoughts.length)];
+            }
+
+            // AFFERMAZIONI
+            if (message.match(/\bsi\b|\bsì\b|\byep\b|\byeah\b|\bdavvero\b/) && !message.includes('no')) {
                 const responses = [
-                    "Beh, ottima domanda! Personalmente penso che...",
-                    "Mmm, non è banale! Vediamo... direi che...",
-                    "Mi piace questa domanda! Lascia che pensi... beh, credo che...",
+                    userProfile.userName ? `Sì ${userProfile.userName}! Perfetto! Sapevo che avremmo pensato allo stesso modo! 😄` : "Si! Perfetto! Sono contento che la pensi così!",
+                    "Esatto! Vedi che la pensiamo allo stesso modo? Mi piace!",
+                    userProfile.userName ? `${userProfile.userName}, bella! Allora andiamo avanti con questa idea!` : "Fantastico! Andiamo avanti allora!",
                 ];
                 return responses[Math.floor(Math.random() * responses.length)];
             }
 
-            // RISPOSTE GENERICHE
+            // NEGAZIONI
+            if (message.includes('no') && !message.includes('si')) {
+                const responses = [
+                    userProfile.userName ? `Va bene ${userProfile.userName}, capisco il tuo punto di vista. Non c'è fretta. Quali sono le tue motivazioni?` : "Ok, capisco. Ma raccontami perché la pensi così, sono curioso.",
+                    "Ah, interessante! Allora mi spieghi il tuo ragionamento? Mi interessa il tuo punto di vista.",
+                    userProfile.userName ? `${userProfile.userName}, nessun problema! Non siamo sempre d'accordo e va bene così. Comunque, perché no?` : "Va bene, non tutti pensiamo uguale. Per carità, ma interessami il tuo ragionamento.",
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+
+            // RISPOSTE INTELLIGENTI A MESSAGGI LUNGHI
+            if (userMessage.length > 30) {
+                const longResponses = [
+                    userProfile.userName ? `Accipicchia ${userProfile.userName}! C'è più di quello che mi vedi scrivere. Spiegami meglio, voglio capire davvero quello che pensi.` : "Oh wow, c'è molto in quello che dici! Spiegami meglio, voglio capirlo davvero!",
+                    userProfile.userName ? `${userProfile.userName}, sai cosa? Mi piace come ragioni! È complesso però... puoi semplificarmi un po'?` : "Interessante come la vedi! Ma aspetta, fammi capire meglio una cosa...",
+                    "Wow, vedo che hai pensato a fondo a questo! Mi affascina il modo in cui costruisci il discorso. Continua!",
+                    userProfile.userName ? `${userProfile.userName}, vedo che ti piace analizzare le cose! Io adoro quando la gente pensa. Allora, in parole povere, cosa mi stai dicendo?` : "Vedo che pensi profondamente a questo! Ma in sintesi, cosa stai dicendo?",
+                ];
+                return longResponses[Math.floor(Math.random() * longResponses.length)];
+            }
+
+            // RISPOSTE GENERICHE NATURALI - ULTRA CONVERSAZIONALI
             const genericResponses = [
-                userProfile.userName ? `${userProfile.userName}, interessante! Ma fammi capire...` : "Interessante! Vai avanti per favor",
-                "Oh, allora! Non è da poco! E poi cosa è successo?",
-                "Ahahah mi piace come pensi! E allora?",
-                "Capito, capito! Continua la storia!",
-                "Questo mi affascina! Raccontami di più!",
-                "Sì sì! Vedo dove vai. Cosa te ne è importato?",
-                "Dai dai! Ho voglia di sentire come è finita!",
+                userProfile.userName ? `${userProfile.userName}, interessante! Raccontami di più, sto seguendo!` : "Oh, interessante! Vai avanti!",
+                "Accidenti, non me l'aspettavo! Continua pure!",
+                userProfile.userName ? `Sì ${userProfile.userName}, capisco! E poi cosa è successo?` : "Capito! E cosa è successo dopo?",
+                "Haha, mi piace il tuo modo di pensare! È diverso. Qual è il prossimo passo?",
+                "Mmm davvero? Non l'avevo mai considerato da questo punto di vista!",
+                userProfile.userName ? `${userProfile.userName}, dimmene di più! Mi piace dove stai andando con questo!` : "Dimmi di più! Mi piace la direzione!",
+                "Wow! Mi hai sorpreso con questa risposta! Continua, sono tutto orecchi!",
+                userProfile.userName ? `Vediamo ${userProfile.userName}... spiegami ancora una volta...` : "Aspetta, voglio capire meglio...",
+                "Ok, ok, ma allora come la metti con... insomma, dimmi tutto!",
+                userProfile.userName ? `Senti ${userProfile.userName}, hai un punto! Ma raccontami come ci sei arrivato?` : "Hai un punto, ma aiutami a capire il tuo ragionamento!",
             ];
 
             return genericResponses[Math.floor(Math.random() * genericResponses.length)];
