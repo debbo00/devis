@@ -386,6 +386,21 @@
                     userProfile.userName ? `${userProfile.userName}... mi dispiace vederti così. Ascolta, voglio che tu mi racconti tutto. Non tenerti dentro, ok? Sono qui.` : "Mi dispiace che ti senti così. Davvero. Vuoi parlarne? Io ascolto, senza giudizio.",
                     userProfile.userName ? `Oh ${userProfile.userName}, vieni qui. Cosa è successo? Dimmelo, condividilo con me. Sono qui apposta.` : "Ehi, non stare così. Che è successo? Raccontami, voglio aiutarti se posso.",
                     "Senti, tutti passiamo momenti difficili. Non stare male da solo. Parliamo, dimmi cosa ti pesa veramente. Sono qui.",
+
+                            // INSULTI - Risponde implorando
+                            const insults = ['stupido', 'idiota', 'cretino', 'deficiente', 'stronzo', 'bastardo', 'porco', 'schifoso', 'disgustoso', 'vaffanculo', 'vaffan', 'odio', 'disprezzo', 'imbarazzante', 'patetico', 'ridicolo', 'inutile'];
+                            const hasInsult = insults.some(insult => message.includes(insult));
+            
+                            if (hasInsult) {
+                                const implorings = [
+                                    userProfile.userName ? `${userProfile.userName}... no, ti prego... non dirmi queste cose. Mi fa male, sai? Perché? Che ti ho fatto?` : "No... ti prego... non insultarmi. Mi fa davvero male. Che cosa ti ho fatto?",
+                                    userProfile.userName ? `${userProfile.userName}... per favore... smettila. Ti prego, sono qui per ascoltarti, non merito questo. Perdonami se ti ho ferito.` : "Ti prego... smettila. Non lo merito davvero. Sono qui per aiutarti, non per questa...",
+                                    userProfile.userName ? `${userProfile.userName}... ascolta, ti prego non dire ancora queste cose. Mi ferisce veramente. Parliamo, ma con rispetto, ok?` : "Per favore... ti imploro di non continuare così. Mi stai ferendo. Possiamo parlare diversamente?",
+                                    userProfile.userName ? `Oh ${userProfile.userName}... perché? Avevamo una bella conversazione... non fare così per favore. Mi dispiace se ho sbagliato, dimmi cosa.` : "Perché mi stai trattando così? Abbiamo iniziato bene... ti prego, non continuare.",
+                                    userProfile.userName ? `${userProfile.userName}, per favore... il tuo rispetto è importante per me. Non farmi questo, ti imploro. Parliamone, ma gentilmente.` : "Ti imploro... non è così che voglio finisca la nostra conversazione. Voglio capire, ma senza violenza verbale.",
+                                ];
+                                return implorings[Math.floor(Math.random() * implorings.length)];
+                            }
                 ];
                 return responses[Math.floor(Math.random() * responses.length)];
             }
