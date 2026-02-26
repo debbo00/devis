@@ -466,15 +466,22 @@
         }
 
         function sendMessage() {
-            const text = messageInput.value.trim();
-            if (text === '') return;
+            let text = messageInput.value.trim();
 
+            // Se l'utente invia una stringa vuota, considerala come "(silenzio)"
+            const userSentSilence = text === '';
+            if (userSentSilence) {
+                text = '(silenzio)';
+            }
+
+            // Mostra sempre il messaggio dell'utente (anche il "(silenzio)")
             addMessage(text, true);
             messageInput.value = '';
 
             const delay = 400 + Math.random() * 1200;
             setTimeout(() => {
-                const botResponse = getBotResponse(text);
+                // Se l'utente ha inviato "(silenzio)", passa stringa vuota a getBotResponse
+                const botResponse = getBotResponse(userSentSilence ? '' : text);
                 addMessage(botResponse, false);
             }, delay);
         }
