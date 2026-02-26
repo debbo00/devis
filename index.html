@@ -430,11 +430,13 @@
             addMessage(text, true);
             messageInput.value = '';
 
-            // Simula il ritardo della risposta del bot
+            // Simula il ritardo naturale della risposta umana
+            // A volte risponde veloce, a volte pensa di più
+            const delay = 300 + Math.random() * 1500;
             setTimeout(() => {
                 const botResponse = getBotResponse(text);
                 addMessage(botResponse, false);
-            }, 500 + Math.random() * 500);
+            }, delay);
         }
 
         sendBtn.addEventListener('click', sendMessage);
