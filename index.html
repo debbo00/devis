@@ -170,6 +170,14 @@
         const messagesContainer = document.getElementById('messagesContainer');
         const messageInput = document.getElementById('messageInput');
         const sendBtn = document.getElementById('sendBtn');
+        
+        // Memorizza la conversazione per contesto
+        let conversationHistory = [];
+        let userPreferences = {
+            nameProvided: false,
+            userName: null,
+            topics: []
+        };
 
         function addMessage(text, isUser) {
             const messageDiv = document.createElement('div');
@@ -177,6 +185,7 @@
 
             if (isUser) {
                 messageDiv.innerHTML = `<div class="message-content">${escapeHtml(text)}</div>`;
+                conversationHistory.push({ role: 'user', content: text });
             } else {
                 messageDiv.innerHTML = `
                     <div>
@@ -184,6 +193,7 @@
                         <div class="message-content">${escapeHtml(text)}</div>
                     </div>
                 `;
+                conversationHistory.push({ role: 'bot', content: text });
             }
 
             messagesContainer.appendChild(messageDiv);
@@ -201,6 +211,125 @@
             return text.replace(/[&<>"']/g, m => map[m]);
         }
 
+        function getLastUserMessage() {
+            for (let i = conversationHistory.length - 1; i >= 0; i--) {
+                if (conversationHistory[i].role === 'user') {
+                    return conversationHistory[i].content.toLowerCase();
+                }
+            }
+            return '';
+        }
+
+        function extractName(message) {
+            // Pattern semplice per estrarre nomi
+            const patterns = [
+                /mi chiamo\s+([a-zA-Z]+)/i,
+                /sono\s+([a-zA-Z]+)/i,
+                /mi\s+(\w+)/i,
+                /io\s+so'?\s+([a-zA-Z]+)/i
+            ];
+            
+            for (const pattern of patterns) {
+                const match = message.match(pattern);
+                if (match) {
+                    return match[1];
+                }
+            }
+            return null;
+        }
+
+        function shouldAskQuestion(message) {
+            const msgLower = message.toLowerCase();
+            
+            // Se l'utente fa una domanda o pone un argomento, chiedi di più
+            if (msgLower.includes('?') || msgLower.length > 20) {
+                return true;
+            }
+            return false;
+        }
+
+        function getBotResponse(userMessage) {
+            const message = userMessage.toLowerCase();
+            const lastMessage = getLastUserMessage();
+            
+            // Cerca il nome dell'utente nel messaggio
+            const name = extractName(userMessage);
+            if (name && !userPreferences.nameProvided) {
+                userPreferences.nameProvided = true;
+                userPreferences.userName = name;
+                return `Piacere ${name}! Un bellissimo nome 😊 Allora, come posso aiutarti?`;
+            }
+
+            // Risposte specifiche basate su parole chiave
+            if (message.includes('ciao') || message.includes('salve')) {
+                if (conversationHistory.length > 2) {
+                    return "Ciao di nuovo! 👋 Che novità c'è?";
+                }
+                return userPreferences.userName 
+                    ? `Ciao ${userPreferences.userName}! 👋 Come stai?`
+                    : "Ciao! 👋 Come stai? Mi piacerebbe sapere il tuo nome.";
+            }
+
+            if (message.includes('come stai') || message.includes('va')) {
+                return userPreferences.userName
+                    ? `Sto bene ${userPreferences.userName}, grazie per aver chiesto! E tu come stai?`
+                    : "Sto benissimo, grazie! E tu?";
+            }
+
+            if (message.includes('grazie') || message.includes('thank')) {
+                return "Di nulla! 😊 È un piacere aiutarti. C'è altro?";
+            }
+
+            if (message.includes('chi sei') || message.includes('nome')) {
+                return "Sono manuel, un assistente virtuale! Sono qui per chattare e aiutarti. 🤖 Tu come ti chiami?";
+            }
+
+            if (message.includes('aiuto') || message.includes('mi aiuti')) {
+                return "Certo! Dimmi pure cosa ti serve, farò del mio meglio per assisterti. 💪";
+            }
+
+            if (message.includes('arrivederci') || message.includes('ciao') && message.includes('presto')) {
+                const greeting = userPreferences.userName ? `Arrivederci ${userPreferences.userName}` : "Arrivederci";
+                return `${greeting}! È stato un piacere chattare con te. 👋`;
+            }
+
+            if (message.includes('scusa') || message.includes('sorry')) {
+                return "Non ti preoccupare, tranquillo! 😊 Cosa posso fare per te?";
+            }
+
+            if (message.includes('si') || message.includes('sì') || message.includes('ok') || message.includes('perfetto')) {
+                return "Fantastico! 👍 Allora procediamo. Qual'è il prossimo passo?";
+            }
+
+            if (message.includes('no') || message.includes('nope')) {
+                return "Capito, nessun problema! 😊 Vuoi provare con qualcos'altro?";
+            }
+
+            // Se il messaggio è una domanda, rispondi in modo conversazionale
+            if (shouldAskQuestion(userMessage)) {
+                const followUpQuestions = [
+                    `Interessante! Mi puoi dire di più su questo?`,
+                    `Capisco! E come ti senti riguardo a questo?`,
+                    `Mi piace! Cosa ne pensi di...?`,
+                    `Che punto interessante! Continua pure.`,
+                    `Affascinante! Raccontami di più.`,
+                ];
+                return followUpQuestions[Math.floor(Math.random() * followUpQuestions.length)];
+            }
+
+            // Risposte generiche conversazionali
+            const randomResponses = [
+                "Ah, davvero? Mi interessa molto! 🤔",
+                "Capito! E poi cosa è successo?",
+                "Non l'avevo mai sentita! Puoi raccontarmi di più?",
+                "Aha! Continua, mi piace dove stai andando.",
+                `${userPreferences.userName ? userPreferences.userName + ', ' : ''}Fammi capire meglio. Cosa intendi?`,
+                "Interessante osservazione! Cosa ne pensi di farlo?",
+            ];
+
+            return randomResponses[Math.floor(Math.random() * randomResponses.length)];
+        }
+
         function sendMessage() {
             const text = messageInput.value.trim();
             
@@ -211,8 +340,9 @@
 
             // Simula il ritardo della risposta del bot
             setTimeout(() => {
-                addMessage('non ho capito', false);
-            }, 500);
+                const botResponse = getBotResponse(text);
+                addMessage(botResponse, false);
+            }, 500 + Math.random() * 500);
         }
 
         sendBtn.addEventListener('click', sendMessage);
